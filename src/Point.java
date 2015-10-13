@@ -12,4 +12,8 @@ public final class Point {
     public int getY() {
         return y;
     }
+
+    public String toString() {
+        return String.format("Point(%d, %d)", x, y);
+    }
 }

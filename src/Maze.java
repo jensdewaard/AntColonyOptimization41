@@ -6,11 +6,13 @@ public class Maze {
     private final boolean[][] grid;
     private final Point startPoint;
     private final Point endPoint;
+    private final int width;
+    private final int height;
 
     public Maze(final File mazeFile, final File coordinateFile) throws FileNotFoundException {
         Scanner scanner = new Scanner(mazeFile);
-        int width = scanner.nextInt();
-        int height = scanner.nextInt();
+        width = scanner.nextInt();
+        height = scanner.nextInt();
         grid = new boolean[width][height];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -18,10 +20,13 @@ public class Maze {
             }
         }
         scanner = new Scanner(coordinateFile);
-        int startX = scanner.nextInt();
-        int startY = scanner.nextInt();
-        int endX = scanner.nextInt();
-        int endY = scanner.nextInt();
+        // We require the substrings because each number is followed
+        // by either a , or a ;
+        int startX = Integer.parseInt(scanner.next().substring(0, 1));
+        int startY = Integer.parseInt(scanner.next().substring(0, 1));
+        int endX = Integer.parseInt(scanner.next().substring(0, 1));
+        int endY = Integer.parseInt(scanner.next().substring(0, 1));
+
         startPoint = new Point(startX, startY);
         endPoint = new Point(endX, endY);
     }
@@ -33,8 +38,22 @@ public class Maze {
     public Point getEndPoint() {
         return this.endPoint;
     }
-    
+
     public boolean isPassable(Point p) {
         return grid[p.getX()][p.getY()];
+    }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Start: ").append(startPoint.toString()).append(System.getProperty("line.separator"));
+        builder.append("End: ").append(endPoint.toString()).append(System.getProperty("line.separator"));
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                builder.append(grid[j][i] ? "1" : "0");
+                builder.append(" ");
+            }
+            builder.append(System.getProperty("line.separator"));
+        }
+        return builder.toString();
     }
 }
