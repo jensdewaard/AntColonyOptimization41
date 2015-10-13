@@ -22,10 +22,14 @@ public class Maze {
         scanner = new Scanner(coordinateFile);
         // We require the substrings because each number is followed
         // by either a , or a ;
-        int startX = Integer.parseInt(scanner.next().substring(0, 1));
-        int startY = Integer.parseInt(scanner.next().substring(0, 1));
-        int endX = Integer.parseInt(scanner.next().substring(0, 1));
-        int endY = Integer.parseInt(scanner.next().substring(0, 1));
+        String nextToken = scanner.next();
+        int startX = Integer.parseInt(nextToken.substring(0, nextToken.length() - 1));
+        nextToken = scanner.next();
+        int startY = Integer.parseInt(nextToken.substring(0, nextToken.length() - 1));
+        nextToken = scanner.next();
+        int endX = Integer.parseInt(nextToken.substring(0, nextToken.length() - 1));
+        nextToken = scanner.next();
+        int endY = Integer.parseInt(nextToken.substring(0, nextToken.length() - 1));
 
         startPoint = new Point(startX, startY);
         endPoint = new Point(endX, endY);
