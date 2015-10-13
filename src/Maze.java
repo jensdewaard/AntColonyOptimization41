@@ -20,19 +20,8 @@ public class Maze {
             }
         }
         scanner = new Scanner(coordinateFile);
-        // We require the substrings because each number is followed
-        // by either a , or a ;
-        String nextToken = scanner.next();
-        int startX = Integer.parseInt(nextToken.substring(0, nextToken.length() - 1));
-        nextToken = scanner.next();
-        int startY = Integer.parseInt(nextToken.substring(0, nextToken.length() - 1));
-        nextToken = scanner.next();
-        int endX = Integer.parseInt(nextToken.substring(0, nextToken.length() - 1));
-        nextToken = scanner.next();
-        int endY = Integer.parseInt(nextToken.substring(0, nextToken.length() - 1));
-
-        startPoint = new Point(startX, startY);
-        endPoint = new Point(endX, endY);
+        startPoint = new Point(scanner.nextLine());
+        endPoint = new Point(scanner.nextLine());
     }
 
     public Point getStartPoint() {
