@@ -5,7 +5,7 @@ public class Ant {
     private Route returnPath;
     private MovementStrategyInterface strategy;
     private boolean reachedEnd = false;
-    private boolean stopped = false;
+    private boolean stopped = false ;
 
     private static final int PHEROMONE_DROPPED = 50;
 
