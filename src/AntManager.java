@@ -23,7 +23,7 @@ public class AntManager {
     public Route getShortestRoute() {
         Route shortest = ants.get(0).getShortestPathFound();
         for (Ant a : ants) {
-            if (a.getRoute().compareTo(shortest) == -1) {
+            if (shortest == null || a.getRoute().compareTo(shortest) == -1) {
                 shortest = a.getShortestPathFound();
             }
         }
