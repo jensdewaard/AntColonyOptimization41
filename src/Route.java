@@ -116,6 +116,10 @@ public class Route {
         }
         return null;
     }
+
+    public Point getStart() {
+        return this.start;
+    }
 }
 
 
