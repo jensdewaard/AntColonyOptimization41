@@ -23,7 +23,19 @@ public final class Point {
         return y;
     }
 
+    public Route.Direction getDirection(Point p) {
+        if(p.equals(new Point(x, y-1))) return Route.Direction.NORTH;
+        if(p.equals(new Point(x, y+1))) return Route.Direction.SOUTH;
+        if(p.equals(new Point(x-1, y))) return Route.Direction.WEST;
+        if(p.equals(new Point(x+1, y))) return Route.Direction.EAST;
+        throw new IllegalArgumentException("Points are not adjacent.");
+    }
+
     public String toString() {
         return String.format("%d, %d;", x, y);
+    }
+
+    public boolean equals(Object o) {
+        return o instanceof Point && this.x == ((Point) o).x && this.y == ((Point) o).y;
     }
 }

@@ -1,9 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Maze {
+    private final double EVAPORATION_CONSTANT = 0.1;
     private final boolean[][] grid;
+    private int[][] pheromones;
     private final Point startPoint;
     private final Point endPoint;
     private final int width;
@@ -14,9 +17,11 @@ public class Maze {
         width = scanner.nextInt();
         height = scanner.nextInt();
         grid = new boolean[width][height];
+        pheromones = new int[width][height];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 grid[j][i] = scanner.nextInt() == 1;
+                pheromones[j][i] = 0;
             }
         }
         scanner = new Scanner(coordinateFile);
@@ -32,8 +37,66 @@ public class Maze {
         return this.endPoint;
     }
 
+    public int getPheromones(Point p) {
+        return pheromones[p.getX()][p.getY()];
+    }
+
     public boolean isPassable(Point p) {
-        return grid[p.getX()][p.getY()];
+        try {
+            return grid[p.getX()][p.getY()];
+        } catch (IndexOutOfBoundsException ex) {
+            return false;
+        }
+    }
+
+    public ArrayList<Point> getPossibleMoves(Point p) {
+        ArrayList<Point> points = new ArrayList<>();
+
+        if (isPassable(new Point(p.getX() + 1, p.getY())))
+            points.add(new Point(p.getX() + 1, p.getY()));
+        if (isPassable(new Point(p.getX() - 1, p.getY())))
+            points.add(new Point(p.getX() - 1, p.getY()));
+        if (isPassable(new Point(p.getX(), p.getY() + 1)))
+            points.add(new Point(p.getX(), p.getY() + 1));
+        if (isPassable(new Point(p.getX(), p.getY() - 1)))
+            points.add(new Point(p.getX(), p.getY() - 1));
+        return points;
+    }
+
+    public Point getNextPosition(Point p, Route.Direction d) {
+        Point nextPoint;
+        switch (d) {
+            case NORTH:
+                nextPoint = new Point(p.getX(), p.getY() - 1);
+                if (isPassable(nextPoint)) {
+                    return nextPoint;
+                } else {
+                    throw new IllegalArgumentException("Can't move in given direction.");
+                }
+            case EAST:
+                nextPoint = new Point(p.getX() + 1, p.getY());
+                if (isPassable(nextPoint)) {
+                    return nextPoint;
+                } else {
+                    throw new IllegalArgumentException("Can't move in given direction.");
+                }
+            case SOUTH:
+                nextPoint = new Point(p.getX(), p.getY() + 1);
+                if (isPassable(nextPoint)) {
+                    return nextPoint;
+                } else {
+                    throw new IllegalArgumentException("Can't move in given direction.");
+                }
+            case WEST:
+                nextPoint = new Point(p.getX() - 1, p.getY());
+                if (isPassable(nextPoint)) {
+                    return nextPoint;
+                } else {
+                    throw new IllegalArgumentException("Can't move in given direction.");
+                }
+            default:
+                throw new IllegalArgumentException("Direction is not handled.");
+        }
     }
 
     public String toString() {
@@ -48,5 +111,17 @@ public class Maze {
             builder.append(System.getProperty("line.separator"));
         }
         return builder.toString();
+    }
+
+    public void addPheromone(Point point, int amount) {
+        pheromones[point.getX()][point.getY()] += amount;
+    }
+
+    public void evaporatePheromones() {
+        for(int i = 0; i < height; i++)  {
+            for(int j = 0; j <width; j++) {
+                pheromones[j][i] -= pheromones[j][i] > 0 ? 3 : 0;
+            }
+        }
     }
 }
