@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Maze {
@@ -11,6 +12,7 @@ public class Maze {
     private final Point endPoint;
     private final int width;
     private final int height;
+    private HashMap<Move, Integer> allMoves;
 
     public Maze(final File mazeFile, final File coordinateFile) throws FileNotFoundException {
         Scanner scanner = new Scanner(mazeFile);
@@ -61,6 +63,19 @@ public class Maze {
         if (isPassable(new Point(p.getX(), p.getY() - 1)))
             points.add(new Point(p.getX(), p.getY() - 1));
         return points;
+    }
+    
+    public void addPossibleMove(Point p) {
+        ArrayList<Point> points = new ArrayList<>();
+
+        if (isPassable(new Point(p.getX() + 1, p.getY())))
+            allMoves.put(new Move(p, Route.Direction.EAST), 0);
+        if (isPassable(new Point(p.getX() - 1, p.getY())))
+        	allMoves.put(new Move(p, Route.Direction.WEST), 0);
+        if (isPassable(new Point(p.getX(), p.getY() + 1)))
+        	allMoves.put(new Move(p, Route.Direction.SOUTH), 0);
+        if (isPassable(new Point(p.getX(), p.getY() - 1)))
+        	allMoves.put(new Move(p, Route.Direction.NORTH), 0);
     }
 
     public Point getNextPosition(Point p, Route.Direction d) {
@@ -123,5 +138,13 @@ public class Maze {
                 pheromones[j][i] -= pheromones[j][i] > 0 ? 3 : 0;
             }
         }
+    }
+    
+    public int getHeight() {
+    	return height;
+    }
+    
+    public int getWidth() {
+    	return width;
     }
 }

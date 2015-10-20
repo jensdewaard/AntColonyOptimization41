@@ -12,6 +12,7 @@ public class AntManager {
         for (int i = 0; i < MAX_ANTS; i++) {
             ants.add(new Ant(maze.getStartPoint()));
         }
+        initiateMoves();
     }
 
     public void update() {
@@ -34,5 +35,13 @@ public class AntManager {
         for (Ant a : ants) {
             System.out.println(a.getRoute());
         }
+    }
+    
+    public void initiateMoves() {
+    	for(int i = 0; i < maze.getWidth(); i++) {
+    		for(int j = 0; j < maze.getHeight(); j++) {
+    			maze.addPossibleMove(new Point(i, j));
+    		}
+    	}
     }
 }
