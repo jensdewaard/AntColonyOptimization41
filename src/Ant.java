@@ -6,6 +6,7 @@ public class Ant {
     private MovementStrategyInterface strategy;
     private boolean reachedEnd = false;
     private boolean stopped = false ;
+    private int pathLength;
 
     private static final int PHEROMONE_DROPPED = 50;
 
@@ -25,7 +26,6 @@ public class Ant {
     }
 
     public void update(Maze maze) {
-        if (stopped) return;
         if (!reachedEnd) {
             Route.Direction direction = strategy.decideDirection(
                     position,
@@ -38,16 +38,16 @@ public class Ant {
             if (position.equals(maze.getEndPoint())) {
                 reachedEnd = true;
                 returnPath = routeTaken.reverse();
+                pathLength = routeTaken.length();
             }
         } else { // hij is op de terugweg
             position = maze.getNextPosition(position, returnPath.popFirst());
-            maze.addPheromone(position, PHEROMONE_DROPPED);
+            maze.addPheromone(position, 1000/pathLength);
             if (position.equals(maze.getStartPoint())) { // hij is weer bij het begin
                 if (shortestPathFound == null || routeTaken.compareTo(shortestPathFound) < 0)
                     shortestPathFound = routeTaken.copy();
                 routeTaken = new Route(position);
                 reachedEnd = false;
-                stopped = true;
             }
         }
     }

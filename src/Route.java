@@ -120,6 +120,10 @@ public class Route {
     public Point getStart() {
         return this.start;
     }
+    
+    public int length() {
+    	return steps.size();
+    }
 }
 
 
