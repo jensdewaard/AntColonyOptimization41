@@ -40,7 +40,9 @@ public class AntManager {
     public void initiateMoves() {
     	for(int i = 0; i < maze.getWidth(); i++) {
     		for(int j = 0; j < maze.getHeight(); j++) {
-    			maze.addPossibleMove(new Point(i, j));
+    			Point p = new Point(i, j);
+    			maze.initiatePoints(p);
+    			maze.addPossibleMove(p);
     		}
     	}
     }

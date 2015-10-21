@@ -12,7 +12,7 @@ public class Maze {
     private final Point endPoint;
     private final int width;
     private final int height;
-    private HashMap<Move, Integer> allMoves;
+    private HashMap<Point, HashMap<Move, Integer>> allMoves;
 
     public Maze(final File mazeFile, final File coordinateFile) throws FileNotFoundException {
         Scanner scanner = new Scanner(mazeFile);
@@ -26,7 +26,7 @@ public class Maze {
                 pheromones[j][i] = 0;
             }
         }
-        allMoves = new HashMap<Move,Integer>();
+        allMoves = new HashMap<Point, HashMap<Move,Integer>>();
         scanner = new Scanner(coordinateFile);
         startPoint = new Point(scanner.nextLine());
         endPoint = new Point(scanner.nextLine());
@@ -66,15 +66,24 @@ public class Maze {
         return points;
     }
     
+    public ArrayList<Move> getPossibleMoves1(Point p) {
+        ArrayList<Move> moves = new ArrayList<Move>(allMoves.get(p).keySet());
+        return moves;
+    }
+    
+    public void initiatePoints(Point p) {
+    	allMoves.put(p, new HashMap<Move, Integer>());
+    }
+    
     public void addPossibleMove(Point p) {
         if (isPassable(new Point(p.getX() + 1, p.getY())))
-            allMoves.put(new Move(p, Route.Direction.EAST), 0);
+            allMoves.get(p).put(new Move(p, Route.Direction.EAST), 0);
         if (isPassable(new Point(p.getX() - 1, p.getY())))
-        	allMoves.put(new Move(p, Route.Direction.WEST), 0);
+        	allMoves.get(p).put(new Move(p, Route.Direction.WEST), 0);
         if (isPassable(new Point(p.getX(), p.getY() + 1)))
-        	allMoves.put(new Move(p, Route.Direction.SOUTH), 0);
+        	allMoves.get(p).put(new Move(p, Route.Direction.SOUTH), 0);
         if (isPassable(new Point(p.getX(), p.getY() - 1)))
-        	allMoves.put(new Move(p, Route.Direction.NORTH), 0);
+        	allMoves.get(p).put(new Move(p, Route.Direction.NORTH), 0);
     }
 
     public Point getNextPosition(Point p, Route.Direction d) {
