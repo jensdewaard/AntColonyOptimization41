@@ -19,6 +19,7 @@ public class Main {
             return;
         }
         AntManager manager = new AntManager(maze);
+        manager.initiateMoves();
         for(int i = 0; i < ITERATIONS; i++) {
             manager.update();
             maze.evaporatePheromones();

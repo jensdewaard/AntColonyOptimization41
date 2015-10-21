@@ -26,6 +26,7 @@ public class Maze {
                 pheromones[j][i] = 0;
             }
         }
+        allMoves = new HashMap<Move,Integer>();
         scanner = new Scanner(coordinateFile);
         startPoint = new Point(scanner.nextLine());
         endPoint = new Point(scanner.nextLine());
@@ -66,8 +67,6 @@ public class Maze {
     }
     
     public void addPossibleMove(Point p) {
-        ArrayList<Point> points = new ArrayList<>();
-
         if (isPassable(new Point(p.getX() + 1, p.getY())))
             allMoves.put(new Move(p, Route.Direction.EAST), 0);
         if (isPassable(new Point(p.getX() - 1, p.getY())))
