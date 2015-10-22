@@ -84,7 +84,6 @@ public class Maze {
     private void addPossibleMove(Point p) {
         if (isPassable(new Point(p.getX() + 1, p.getY()))) {
             allMoves.get(p).put(new Move(p, Route.Direction.EAST), 0);
-        	System.out.println(allMoves.get(p).get(new Move(p, Route.Direction.EAST)));
         }
         if (isPassable(new Point(p.getX() - 1, p.getY())))
         	allMoves.get(p).put(new Move(p, Route.Direction.WEST), 0);
@@ -158,6 +157,10 @@ public class Maze {
                 pheromones[j][i] -= pheromones[j][i] > 0 ? 3 : 0;
             }
         }
+    }
+    
+    public void evaporateMovePheromones() {
+        allMoves.forEach( (point, moveMap) -> moveMap.forEach((move, pheromone) -> moveMap.replace(move, (int) ((1 - EVAPORATION_CONSTANT) * pheromone)) ) );
     }
     
     public int getHeight() {

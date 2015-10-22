@@ -22,7 +22,7 @@ public class Main {
         manager.initiateMoves();
         for(int i = 0; i < ITERATIONS; i++) {
             manager.update();
-            maze.evaporatePheromones();
+            maze.evaporateMovePheromones();
         }
         System.out.println("Shortest route:");
         System.out.println(manager.getShortestRoute());
