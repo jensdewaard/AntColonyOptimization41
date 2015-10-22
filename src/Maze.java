@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Maze {
     private final double EVAPORATION_CONSTANT = 0.1;
@@ -43,6 +44,10 @@ public class Maze {
     public int getPheromones(Point p) {
         return pheromones[p.getX()][p.getY()];
     }
+    
+    public int getMovePheromones(Point p, Move m) {
+        return allMoves.get(p).get(m);
+    }
 
     public boolean isPassable(Point p) {
         try {
@@ -67,15 +72,16 @@ public class Maze {
     }
     
     public ArrayList<Move> getPossibleMoves1(Point p) {
-        ArrayList<Move> moves = new ArrayList<Move>(allMoves.get(p).keySet());
+    	ArrayList<Move> moves = new ArrayList<Move>(allMoves.get(p).keySet());
         return moves;
     }
     
-    public void initiatePoints(Point p) {
+    public void initiatePoint(Point p) {
     	allMoves.put(p, new HashMap<Move, Integer>());
+    	addPossibleMove(p);
     }
     
-    public void addPossibleMove(Point p) {
+    private void addPossibleMove(Point p) {
         if (isPassable(new Point(p.getX() + 1, p.getY())))
             allMoves.get(p).put(new Move(p, Route.Direction.EAST), 0);
         if (isPassable(new Point(p.getX() - 1, p.getY())))
@@ -138,6 +144,10 @@ public class Maze {
 
     public void addPheromone(Point point, int amount) {
         pheromones[point.getX()][point.getY()] += amount;
+    }
+    
+    public void addMovePheromone(Point p, Move move, int amount) {
+    	allMoves.get(p).put(move, allMoves.get(p).get(move) + amount);
     }
 
     public void evaporatePheromones() {

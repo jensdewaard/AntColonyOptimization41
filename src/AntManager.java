@@ -41,8 +41,7 @@ public class AntManager {
     	for(int i = 0; i < maze.getWidth(); i++) {
     		for(int j = 0; j < maze.getHeight(); j++) {
     			Point p = new Point(i, j);
-    			maze.initiatePoints(p);
-    			maze.addPossibleMove(p);
+    			maze.initiatePoint(p);
     		}
     	}
     }

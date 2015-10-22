@@ -29,7 +29,7 @@ public class Ant {
         if (!reachedEnd) {
             Route.Direction direction = strategy.decideDirection(
                     position,
-                    maze.getPossibleMoves(position),
+                    maze.getPossibleMoves1(position),
                     maze,
                     Route.invertDirection(routeTaken.peekLast())
             );
@@ -42,7 +42,7 @@ public class Ant {
             }
         } else { // hij is op de terugweg
             position = maze.getNextPosition(position, returnPath.popFirst());
-            maze.addPheromone(position, 1000/pathLength);
+            maze.addMovePheromone(position, 1000/pathLength);
             if (position.equals(maze.getStartPoint())) { // hij is weer bij het begin
                 if (shortestPathFound == null || routeTaken.compareTo(shortestPathFound) < 0)
                     shortestPathFound = routeTaken.copy();
