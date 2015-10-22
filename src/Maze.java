@@ -82,8 +82,10 @@ public class Maze {
     }
     
     private void addPossibleMove(Point p) {
-        if (isPassable(new Point(p.getX() + 1, p.getY())))
+        if (isPassable(new Point(p.getX() + 1, p.getY()))) {
             allMoves.get(p).put(new Move(p, Route.Direction.EAST), 0);
+        	System.out.println(allMoves.get(p).get(new Move(p, Route.Direction.EAST)));
+        }
         if (isPassable(new Point(p.getX() - 1, p.getY())))
         	allMoves.get(p).put(new Move(p, Route.Direction.WEST), 0);
         if (isPassable(new Point(p.getX(), p.getY() + 1)))

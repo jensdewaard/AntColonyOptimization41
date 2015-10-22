@@ -24,12 +24,13 @@ public class Move {
 	}
 	
 	public boolean equals(Object o) {
-		return o instanceof Point && this.point == ((Move) o).point && this.dir == ((Move) o).dir;
+		return ((o instanceof Move) && (point.equals(((Move) o).getPoint())) && (this.dir == ((Move) o).getDirection()));
 	}
 	
 	public int hashCode() {
-        int result = point;
-        result = 31 * result + y;
-        return result;
+		int hash = 7;
+		hash = 31 * hash + point.hashCode();
+		hash = 31 * hash + (null == dir ? 0 : dir.hashCode());
+		return hash;
     }
 }
