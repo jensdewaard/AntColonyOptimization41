@@ -36,6 +36,12 @@ public final class Point {
     }
 
     public boolean equals(Object o) {
-        return o instanceof Point && this.x == ((Point) o).x && this.y == ((Point) o).y;
+        return o instanceof Point && this.x == ((Point) o).getX() && this.y == ((Point) o).getY();
+    }
+    
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
     }
 }

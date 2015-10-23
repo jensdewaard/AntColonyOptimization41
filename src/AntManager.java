@@ -24,7 +24,7 @@ public class AntManager {
     public Route getShortestRoute() {
         Route shortest = ants.get(0).getShortestPathFound();
         for (Ant a : ants) {
-            if (shortest == null || a.getRoute().compareTo(shortest) == -1) {
+            if (shortest == null || a.getShortestPathFound().compareTo(shortest) == -1) {
                 shortest = a.getShortestPathFound();
             }
         }
@@ -33,7 +33,7 @@ public class AntManager {
 
     public void printAllRoutes() {
         for (Ant a : ants) {
-            System.out.println(a.getRoute());
+            System.out.println(a.getShortestPathFound());
         }
     }
     
@@ -41,8 +41,7 @@ public class AntManager {
     	for(int i = 0; i < maze.getWidth(); i++) {
     		for(int j = 0; j < maze.getHeight(); j++) {
     			Point p = new Point(i, j);
-    			maze.initiatePoints(p);
-    			maze.addPossibleMove(p);
+    			maze.initiatePoint(p);
     		}
     	}
     }
