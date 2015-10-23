@@ -31,16 +31,11 @@ public class Ant {
     }
 
     public void update(Maze maze) {
-		ArrayList<Move> possibleMoves = maze.getPossibleMoves1(position);
-		if(points.contains(position) && points.indexOf(position) != points.size() - 1) {
-			int index = points.indexOf(position);
-			Route.Direction dir = points.get(index).getDirection(points.get(index + 1));
-			Move repeatedMove = new Move(position, dir);
-			possibleMoves.remove(repeatedMove);
-		}
+    	
             Route.Direction direction = strategy.decideDirection(
                     position,
-                    possibleMoves,
+                    maze.getPossibleMoves1(position),
+                    points,
                     maze,
                     Route.invertDirection(routeTaken.peekLast())
             );
