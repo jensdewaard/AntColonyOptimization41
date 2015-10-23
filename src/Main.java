@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 
 public class Main {
 
-    private static final int ITERATIONS = 20000;
+    private static final int ITERATIONS = 100000;
 
     public static void main(String[] args) {
         if(args.length != 2) {

@@ -31,6 +31,9 @@ public class Ant {
     }
 
     public void update(Maze maze) {
+    	if(routeTaken.length() > 20000) {
+    		reset(maze);
+    	}
     	
             Route.Direction direction = strategy.decideDirection(
                     position,
@@ -49,12 +52,9 @@ public class Ant {
                 pathLength = routeTaken.length();
                 for(int i = 0; i < points.size() - 1; i++) {
                 	Move move = new Move(points.get(i), points.get(i).getDirection(points.get(i + 1)));
-                	maze.addMovePheromone(points.get(i), move, 200/pathLength);
+                	maze.addMovePheromone(points.get(i), move, 1000/pathLength);
                 }
-                routeTaken = new Route(maze.getStartPoint());
-                position = maze.getStartPoint();
-                points = new ArrayList<Point>();
-                points.add(maze.getStartPoint());
+                reset(maze);
             }
     }
 
@@ -74,9 +74,10 @@ public class Ant {
         return stopped;
     }
 
-    public void reset() {
-        stopped = false;
-        reachedEnd = false;
-        routeTaken = new Route(position);
+    public void reset(Maze maze) {
+        routeTaken = new Route(maze.getStartPoint());
+        position = maze.getStartPoint();
+        points = new ArrayList<Point>();
+        points.add(maze.getStartPoint());
     }
 }
