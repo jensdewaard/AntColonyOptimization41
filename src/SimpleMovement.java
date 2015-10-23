@@ -5,7 +5,7 @@ import java.util.ArrayList;
  */
 public class SimpleMovement implements MovementStrategyInterface {
     @Override
-    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, Maze m, Route.Direction previous) {
+    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, ArrayList<Point> points, Maze m, Route.Direction previous) {
         return possibilities.get(0).getDirection();
     }
 }

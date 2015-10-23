@@ -12,13 +12,13 @@ public class PreferNoPheromonesDecorator extends AbstractMovementDecorator {
     }
 
     @Override
-    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, Maze m, Route.Direction previous) {
+    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, ArrayList<Point> points, Maze m, Route.Direction previous) {
         for(Move move : possibilities) {
             int pheromones = m.getMovePheromones(current, move);
 
             if(pheromones == 0)
                 return move.getDirection();
         }
-        return decorated.decideDirection(current, possibilities, m, previous);
+        return decorated.decideDirection(current, possibilities, points, m, previous);
     }
 }

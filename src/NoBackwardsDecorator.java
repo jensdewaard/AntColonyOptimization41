@@ -8,7 +8,7 @@ public class NoBackwardsDecorator extends AbstractMovementDecorator {
     }
 
     @Override
-    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, Maze m, Route.Direction previous) {
+    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, ArrayList<Point> points, Maze m, Route.Direction previous) {
         if(previous != null) {
         	for(int i = 0; i < possibilities.size(); i++) {
         		if(possibilities.get(i).getDirection() == previous) {
@@ -17,6 +17,6 @@ public class NoBackwardsDecorator extends AbstractMovementDecorator {
         		}
         	}
         }
-        return parent.decideDirection(current, possibilities, m, previous);
+        return parent.decideDirection(current, possibilities, points, m, previous);
     }
 }

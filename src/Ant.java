@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
 public class Ant {
     private Point position;
     private Route shortestPathFound;
+    private ArrayList<Point> points;
     private Route routeTaken;
     private Route returnPath;
     private MovementStrategyInterface strategy;
@@ -12,6 +15,8 @@ public class Ant {
 
     public Ant(Point start) {
         position = start;
+        points = new ArrayList();
+        points.add(position);
         routeTaken = new Route(start);
         strategy =
                 new OneOptionDecorator(
@@ -26,33 +31,36 @@ public class Ant {
     }
 
     public void update(Maze maze) {
-        if (!reachedEnd) {
+		ArrayList<Move> possibleMoves = maze.getPossibleMoves1(position);
+		if(points.contains(position) && points.indexOf(position) != points.size() - 1) {
+			int index = points.indexOf(position);
+			Route.Direction dir = points.get(index).getDirection(points.get(index + 1));
+			Move repeatedMove = new Move(position, dir);
+			possibleMoves.remove(repeatedMove);
+		}
             Route.Direction direction = strategy.decideDirection(
                     position,
-                    maze.getPossibleMoves1(position),
+                    possibleMoves,
                     maze,
                     Route.invertDirection(routeTaken.peekLast())
             );
             routeTaken.takeStep(direction);
             position = maze.getNextPosition(position, direction);
+            points.add(position);
             if (position.equals(maze.getEndPoint())) {
-                reachedEnd = true;
-                returnPath = routeTaken.reverse();
-                pathLength = routeTaken.length();
-            }
-        } else { // hij is op de terugweg
-        	Route.Direction returnDir = returnPath.popFirst();
-        	Route.Direction initialDir = Route.invertDirection(returnDir);
-            Move move = new Move(maze.getNextPosition(position, returnDir), initialDir);
-        	position = maze.getNextPosition(position, returnDir);
-            maze.addMovePheromone(position, move, 1000/pathLength);
-            if (position.equals(maze.getStartPoint())) { // hij is weer bij het begin
-                if (shortestPathFound == null || routeTaken.compareTo(shortestPathFound) < 0)
+            	if (shortestPathFound == null || routeTaken.compareTo(shortestPathFound) < 0) {
                     shortestPathFound = routeTaken.copy();
-                routeTaken = new Route(position);
-                reachedEnd = false;
+            	}
+                pathLength = routeTaken.length();
+                for(int i = 0; i < points.size() - 1; i++) {
+                	Move move = new Move(points.get(i), points.get(i).getDirection(points.get(i + 1)));
+                	maze.addMovePheromone(points.get(i), move, 200/pathLength);
+                }
+                routeTaken = new Route(maze.getStartPoint());
+                position = maze.getStartPoint();
+                points = new ArrayList<Point>();
+                points.add(maze.getStartPoint());
             }
-        }
     }
 
     public Route getRoute() {

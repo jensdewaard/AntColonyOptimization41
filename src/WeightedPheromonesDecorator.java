@@ -12,21 +12,31 @@ public class WeightedPheromonesDecorator extends AbstractMovementDecorator {
 
     
     @Override
-    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, Maze m, Route.Direction previous) {
+    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, ArrayList<Point> points, Maze m, Route.Direction previous) {
         int sum = 0;
+        ArrayList<Move> actualPossibilities = new ArrayList<Move>();
         HashMap<Move, Integer> chances = new HashMap<>();
         for(Move move : possibilities) {
-            int pheromones = m.getMovePheromones(current, move)+1;
-            chances.put(move, pheromones);
-            sum += pheromones;
+        	Point next = m.getNextPosition(current, move.getDirection());
+        	if(!points.contains(next)) {
+        		actualPossibilities.add(move);
+        	}
+        }
+        if(actualPossibilities.size() < 1) {
+        	actualPossibilities = possibilities;
+        }
+        for(Move move : actualPossibilities) {
+        	int pheromones = m.getMovePheromones(current, move)+1;
+        	chances.put(move, pheromones);
+        	sum += pheromones;
         }
         Random randomGenerator = new Random();
         float randomDouble = randomGenerator.nextFloat();
-        for(Move move : possibilities) {
+        for(Move move : actualPossibilities) {
             float chance = ((float) chances.get(move)) / (float) sum;
             if(randomDouble < chance) return move.getDirection();
             randomDouble -= chance;
         }
-        return decorated.decideDirection(current, possibilities, m, previous);
+        return decorated.decideDirection(current, possibilities, points, m, previous);
     }
 }

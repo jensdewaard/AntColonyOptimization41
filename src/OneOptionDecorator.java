@@ -8,11 +8,10 @@ public class OneOptionDecorator extends AbstractMovementDecorator {
     }
 
     @Override
-    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, Maze m, Route.Direction previous) {
+    public Route.Direction decideDirection(Point current, ArrayList<Move> possibilities, ArrayList<Point> points, Maze m, Route.Direction previous) {
         if(possibilities.size() == 1) {
-            System.out.println("Only one option, taking that one!");
             return possibilities.get(0).getDirection();
         }
-        return parent.decideDirection(current, possibilities, m, previous);
+        return parent.decideDirection(current, possibilities, points, m, previous);
     }
 }
